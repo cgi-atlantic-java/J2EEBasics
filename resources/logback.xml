@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="100 milliseconds">
+  <appender name="STDOUT-combined" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="me.bantling.j2ee.config.logback.MultiPatternLayoutEncoder">
+      <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS X,Z} [%thread] %-5level %-36logger{36} - %msg%n</pattern>
+      <pattern>container.access|REQUEST %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE-combined" class="ch.qos.logback.core.FileAppender">
+    <file>artifacts/jetty_runtime/logs/combined.log</file>
+    <append>false</append>
+    
+    <encoder class="me.bantling.j2ee.config.logback.MultiPatternLayoutEncoder">
+      <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS X,Z} [%thread] %-5level %-36logger{36} - %msg%n</pattern>
+      <pattern>container.access|REQUEST %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE-log" class="ch.qos.logback.core.FileAppender">
+    <file>artifacts/jetty_runtime/logs/jetty.log</file>
+    <append>false</append>
+    
+    <encoder>
+      <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS X,Z} [%thread] %-5level %-36logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE-access" class="ch.qos.logback.core.FileAppender">
+    <file>artifacts/jetty_runtime/logs/access.log</file>
+    <append>false</append>
+    
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="STDOUT-combined" />
+    <appender-ref ref="FILE-combined" />
+    <appender-ref ref="FILE-log" />
+  </root>
+  
+  <logger name="container.access" level="info" additivity="false">
+    <appender-ref ref="STDOUT-combined" />
+    <appender-ref ref="FILE-combined" />
+    <appender-ref ref="FILE-access" />
+  </logger>
+  
+  <lohgger name="me.bantling.j2ee.basics" level="debug" additivity="false">
+    <appender-ref ref="STDOUT-combined" />
+    <appender-ref ref="FILE-combined" />
+    <appender-ref ref="FILE-log" />
+  </lohgger>
+</configuration>

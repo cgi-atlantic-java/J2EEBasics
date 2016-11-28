@@ -1,0 +1,7 @@
+2016-11-28T20:53:16.926 Z [main] INFO  org.eclipse.jetty.util.log           - Logging initialized @457ms
+2016-11-28T20:53:17.121 Z [main] INFO  org.eclipse.jetty.server.Server      - jetty-9.3.10.v20160621
+2016-11-28T20:53:17.791 Z [main] INFO  /                                    - Warning: No org.apache.tomcat.JarScanner set in ServletContext. Falling back to default JarScanner implementation.
+2016-11-28T20:53:17.986 Z [main] INFO  org.apache.jasper.servlet.TldScanner - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2016-11-28T20:53:18.051 Z [main] INFO  o.e.j.server.handler.ContextHandler  - Started o.e.j.w.WebAppContext@6b19b79{/,file:///C:/Users/greg.hall/AppData/Local/greg.hall/workspace/J2EEBasics/WebContent/application/,AVAILABLE}
+2016-11-28T20:53:18.082 Z [main] INFO  o.e.jetty.server.AbstractConnector   - Started ServerConnector@7b9f2041{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+2016-11-28T20:53:18.082 Z [main] INFO  org.eclipse.jetty.server.Server      - Started @1619ms
