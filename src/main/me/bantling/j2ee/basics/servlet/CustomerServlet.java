@@ -15,15 +15,15 @@ import org.slf4j.LoggerFactory;
 public class CustomerServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
-  private static final Logger log = LoggerFactory.getLogger(CustomerServlet.class);
+  private static final Logger log = LoggerFactory.getLogger("me.bantling.j2ee.basics");
 
   @Override
   protected void doGet(
     final HttpServletRequest request,
     final HttpServletResponse response
   ) throws ServletException, IOException {
-    log.debug("> doGet");
+    log.info("> doGet");
     request.getRequestDispatcher("/WEB-INF/jsp/customer.jsp").forward(request, response);
-    log.debug("< doGet");
+    log.info("< doGet");
   }
 }

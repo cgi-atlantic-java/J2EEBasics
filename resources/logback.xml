@@ -47,9 +47,5 @@
     <appender-ref ref="FILE-access" />
   </logger>
   
-  <lohgger name="me.bantling.j2ee.basics" level="debug" additivity="false">
-    <appender-ref ref="STDOUT-combined" />
-    <appender-ref ref="FILE-combined" />
-    <appender-ref ref="FILE-log" />
-  </lohgger>
+  <lohgger name="me.bantling.j2ee.basics" level="debug"/>
 </configuration>
