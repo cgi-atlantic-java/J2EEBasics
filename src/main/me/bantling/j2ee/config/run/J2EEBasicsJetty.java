@@ -1,6 +1,7 @@
 package me.bantling.j2ee.config.run;
 
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -34,8 +35,8 @@ public class J2EEBasicsJetty {
     );
     
     // Use a jetty-env.xml to specify a custom Properties object as a JNDI entry
-//    final EnvConfiguration envConfiguration = new EnvConfiguration();
-//    envConfiguration.setJettyEnvXml(Paths.get("WebContent/jetty/WEB-INF/jetty-env.xml").toUri().toURL());
+    final EnvConfiguration envConfiguration = new EnvConfiguration();
+    envConfiguration.setJettyEnvXml(Paths.get("WebContent/jetty/WEB-INF/jetty-env.xml").toUri().toURL());
     
     // The context
     final WebAppContext webappContext = new WebAppContext();
@@ -46,7 +47,7 @@ public class J2EEBasicsJetty {
     // Configure this context to be able to handle annotations (EG @WebServlet), WEB-INF, and WEB-INF/web.xml
     webappContext.setConfigurations(new Configuration[] {
       new AnnotationConfiguration(),
-//      envConfiguration,
+      envConfiguration,
       new WebInfConfiguration(),
       new WebXmlConfiguration()
     });
