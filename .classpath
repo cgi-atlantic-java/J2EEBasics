@@ -41,11 +41,11 @@
 	<classpathentry kind="lib" path="lib/jetty/servlet-api-3.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/slf4j/jul-to-slf4j-1.7.5.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j/logback-classic-1.1.7.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j/logback-core-1.1.7.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j/slf4j-api-1.7.21.jar"/>
 	<classpathentry kind="lib" path="lib/jstl/org.apache.taglibs.taglibs-standard-impl-1.2.5.jar"/>
 	<classpathentry kind="lib" path="lib/jstl/org.apache.taglibs.taglibs-standard-spec-1.2.5.jar"/>
 	<classpathentry kind="lib" path="resources"/>
+	<classpathentry kind="lib" path="lib/logback/logback-classic-1.1.7.jar"/>
+	<classpathentry kind="lib" path="lib/logback/logback-core-1.1.7.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j/slf4j-api-1.7.21.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
