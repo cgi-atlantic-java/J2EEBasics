@@ -6,7 +6,7 @@
     </encoder>
   </appender>
   
-  <appender name="FILE-log" class="ch.qos.logback.core.FileAppender">
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <file>artifacts/jetty_runtime/logs/jetty.log</file>
     <append>false</append>
     
@@ -14,24 +14,13 @@
       <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS X,Z} [%thread] %-5level %-36logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
-  
-  <appender name="FILE-access" class="ch.qos.logback.core.FileAppender">
-    <file>artifacts/jetty_runtime/logs/access.log</file>
-    <append>false</append>
-    
-    <encoder>
-      <pattern>%msg%n</pattern>
-    </encoder>
-  </appender>
 
   <root level="info">
     <appender-ref ref="STDOUT" />
-    <appender-ref ref="FILE-log" />
+    <appender-ref ref="FILE" />
   </root>
   
-  <logger name="container.access" level="info" additivity="false">
-    <appender-ref ref="FILE-access" />
-  </logger>
+  <logger name="container.access" level="info"/>
   
-  <lohgger name="me.bantling.j2ee.basics" level="debug"/>
+  <logger name="me.bantling.j2ee.basics" level="debug"/>
 </configuration>
