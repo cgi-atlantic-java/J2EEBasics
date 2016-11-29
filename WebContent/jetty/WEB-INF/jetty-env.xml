@@ -25,17 +25,16 @@
      </Arg>
   </New>
  
-  <!-- Create a datasource - assume the runtime classpath contains the derby.jar in the JDK -->
-  <!--
+  <!-- Create a datasource - assume the runtime classpath contains the hsqldb.jar -->
   <New class="org.eclipse.jetty.plus.jndi.Resource">
     <Arg></Arg>
-    <Arg>jdbc/j2eeconfig</Arg>
+    <Arg>jdbc/mem</Arg>
     <Arg>
-      <New class="org.apache.derby.jdbc.EmbeddedDataSource">
-        <Set name="createDatabase">create</Set>
-        <Set name="databaseName">database</Set>
+      <New class="org.hsqldb.jdbc.JDBCDataSource">
+        <Set name="databaseName">db</Set>
+        <Set name="url">jdbc:hsqldb:mem:db</Set>
+        <Set name="user">SA</Set>
       </New>
     </Arg>
   </New>
-  -->
 </Configure>

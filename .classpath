@@ -47,5 +47,6 @@
 	<classpathentry kind="lib" path="lib/logback/logback-classic-1.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/logback/logback-core-1.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j/slf4j-api-1.7.21.jar"/>
+	<classpathentry kind="lib" path="lib/hsql/hsqldb.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
