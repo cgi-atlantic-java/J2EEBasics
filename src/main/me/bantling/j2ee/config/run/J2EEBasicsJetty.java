@@ -38,7 +38,7 @@ public class J2EEBasicsJetty {
     final EnvConfiguration envConfiguration = new EnvConfiguration();
     envConfiguration.setJettyEnvXml(Paths.get("WebContent/jetty/WEB-INF/jetty-env.xml").toUri().toURL());
     
-    // The context
+    // The context for our application
     final WebAppContext webappContext = new WebAppContext();
     
     // Set the directory to represent the top level of a WAR structure - EG, this directory contains WEB-INF
@@ -63,6 +63,12 @@ public class J2EEBasicsJetty {
     final URL classes = J2EEBasicsJetty.class.getProtectionDomain().getCodeSource().getLocation();
     webappContext.getMetaData().setWebInfClassesDirs(
       Arrays.asList(Resource.newResource(classes))
+    );
+    
+    // Turn off directory displays by default servlet - user gets 403 forbidden errors
+    webappContext.setInitParameter(
+      "org.eclipse.jetty.servlet.Default.dirAllowed",
+      "false"
     );
     
     // Configure access logging the new way in Jetty 9.3 using Slf4jRequestLog rather than logback-access

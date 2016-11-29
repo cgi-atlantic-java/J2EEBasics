@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet(urlPatterns = "/customer", loadOnStartup = 1)
+@WebServlet(
+  name = "Customer",
+  urlPatterns = "/customer",
+  loadOnStartup = 1
+)
 public class CustomerServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
