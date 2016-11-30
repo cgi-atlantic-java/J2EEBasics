@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import me.bantling.j2ee.config.run.J2EEBasicsJetty;
+
 @WebListener
 public class ServletContextLogger implements ServletContextListener {
 
@@ -27,8 +29,20 @@ public class ServletContextLogger implements ServletContextListener {
       sb.
         append(String.format("%n")).
         append(servletReg.getName()).
-        append(" => ").
-        append(servletReg.getMappings());
+        append(" => ");
+      
+      boolean first = true;
+      for (final String mapping : servletReg.getMappings()) {
+        sb.
+          append(first ? "" : ", ").
+          append("http://localhost:").
+          append(J2EEBasicsJetty.PORT).
+          append(evt.getServletContext().getContextPath()).
+          append(mapping.charAt(0) == '/' ? "" : "/").
+          append(mapping);
+        
+        first = false;
+      }
     }
     
     log.info(sb.toString());

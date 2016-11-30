@@ -1,39 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
-  <!--
-    Configure a custom Properties object in a JNDI entry.
-    On a real server, this file could be merged into the server jetty-env.xml file.
-  -->
-  <New class="org.eclipse.jetty.plus.jndi.Resource">
-     <Arg>config/Properties</Arg>
-     <Arg>
-       <New class="java.util.Properties">
-         <Call name="setProperty">
-           <Arg>key1</Arg>
-           <Arg>value1</Arg>
-         </Call>
-         <Call name="setProperty">
-           <Arg>key2</Arg>
-           <Arg>value2</Arg>
-         </Call>
-         <Call name="setProperty">
-           <Arg>container</Arg>
-           <Arg>jetty</Arg>
-         </Call>
-       </New>
-     </Arg>
-  </New>
- 
-  <!-- Create a datasource - assume the runtime classpath contains the hsqldb.jar -->
+  <!-- Create a datasource - sql.enforce_strict_size=true means that column sizes are actually enforced -->
   <New class="org.eclipse.jetty.plus.jndi.Resource">
     <Arg></Arg>
     <Arg>jdbc/mem</Arg>
     <Arg>
       <New class="org.hsqldb.jdbc.JDBCDataSource">
         <Set name="databaseName">db</Set>
-        <Set name="url">jdbc:hsqldb:mem:db</Set>
+        <Set name="url">jdbc:hsqldb:mem:db;sql.enforce_strict_size=true</Set>
         <Set name="user">SA</Set>
+        <Set name="password" type="String"></Set>
       </New>
     </Arg>
   </New>
