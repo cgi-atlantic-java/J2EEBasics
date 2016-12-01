@@ -1,10 +1,11 @@
-package me.bantling.j2ee.basics.util;
+package me.bantling.j2ee.basics.validation;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 
 /**
@@ -22,11 +23,38 @@ public class ValidationBuilder<T> {
     this.validations = new LinkedList<>();
   }
   
+  public ValidationBuilder<T> intGreaterThan(
+    final String name,
+    final ToIntFunction<T> value,
+    final int min
+  ) {
+    validations.add(
+      t -> value.applyAsInt(t) > min ?
+        null :
+        new Validation(name, "Must be >= ".concat(Integer.toString(min)))
+    );
+      
+    return this;
+  }
+  
   public ValidationBuilder<T> nonNull(
     final String name,
     final Function<T, ?> value
   ) {
     validations.add(t -> value.apply(t) != null ? null : new Validation(name, "Cannot be null"));
+    
+    return this;
+  }
+  
+  public ValidationBuilder<T> nonEmptyString(
+    final String name,
+    final Function<T, String> value
+  ) {
+    validations.add(t -> {
+      final String str = value.apply(t);
+      
+      return (str != null) && (str.length() > 0) ? null : new Validation(name, "Cannot be empty");
+    });
     
     return this;
   }
@@ -48,9 +76,14 @@ public class ValidationBuilder<T> {
     validations.add(t -> {
       final String s = str.apply(t);
       
-      return isCanada.test(t) && (s != null) && VALID_CDN_POSTAL_CODE.matcher(s).matches() ?
+      return
+        (! isCanada.test(t)) ||
+        (
+          (s != null) &&
+          VALID_CDN_POSTAL_CODE.matcher(s).matches()
+        ) ?
         null :
-        new Validation(name, "Is not a valid Canadian postal code");
+        new Validation(name, "Invalid Canadian postal code");
     });
     
     return this;
@@ -71,9 +104,14 @@ public class ValidationBuilder<T> {
     validations.add(t -> {
       final String s = str.apply(t);
       
-      return isUSA.test(t) && (s != null) && VALID_USA_ZIP_CODE.matcher(s).matches() ?
+      return
+        (! isUSA.test(t)) ||
+        (
+          (s != null) &&
+          VALID_USA_ZIP_CODE.matcher(s).matches()
+        ) ?
         null :
-        new Validation(name, "Is not a valid US zip code");
+        new Validation(name, "Invalid US zip code");
     });
     
     return this;

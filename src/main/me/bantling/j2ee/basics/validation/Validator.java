@@ -1,4 +1,4 @@
-package me.bantling.j2ee.basics.util;
+package me.bantling.j2ee.basics.validation;
 
 import java.util.List;
 

@@ -2,8 +2,10 @@ package me.bantling.j2ee.basics.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 import javax.naming.InitialContext;
 import javax.servlet.ServletException;
@@ -19,6 +21,10 @@ import org.slf4j.LoggerFactory;
 import me.bantling.j2ee.basics.bean.Address;
 import me.bantling.j2ee.basics.bean.Country;
 import me.bantling.j2ee.basics.bean.Region;
+import me.bantling.j2ee.basics.form.ObjectCreators;
+import me.bantling.j2ee.basics.util.RequestUtils;
+import me.bantling.j2ee.basics.validation.Validation;
+import me.bantling.j2ee.basics.validation.Validators;
 
 @WebServlet(
   name = "Address",
@@ -132,6 +138,79 @@ public class AddressServlet extends HttpServlet {
     request.getRequestDispatcher("/WEB-INF/jsp/address.jsp").forward(request, response);
     
     log.info("< doGet");
+  }
+  
+  @Override
+  protected void doPost(
+    final HttpServletRequest request,
+    final HttpServletResponse response
+  ) throws ServletException, IOException {
+    log.info("> doPost: {}", RequestUtils.requestParameters(request));
+    
+    // Get the address from the form parameters
+    final Address address = ObjectCreators.ADDRESS_CREATOR.create(request);
+    log.debug("Address = {}", address);
+    
+    // Validate the address
+    final List<Validation> errors = Validators.ADDRESS_VALIDATOR.validate(address);
+    log.debug("Validation errors = {}", errors);
+    
+    // If there are no errors, save the address in the database
+    if (errors.isEmpty()) {
+      try {
+        final InitialContext ctx = new InitialContext();
+        final DataSource ds = (DataSource)(ctx.lookup("jdbc/mem"));
+        
+        try (
+          final Connection conn = ds.getConnection();
+          final PreparedStatement stmt = conn.prepareStatement(
+            "update address set" +
+            "       line1 = ?," +
+            "       line2 = ?," +
+            "       city = ?," +
+            "       country = ?," +
+            "       region = ?," +
+            "       postal_code = ?" +
+            " where id = ?"
+          );
+        ) {
+          try {
+            int i = 1;
+            stmt.setString(i++, address.getLine1());
+            stmt.setString(i++, address.getLine2());
+            stmt.setString(i++, address.getCity());
+            stmt.setString(i++, address.getCountry().name());
+            stmt.setString(i++, address.getRegion().name());
+            stmt.setString(i++, address.getPostalCode());
+            stmt.setInt(i++, address.getId());
+            
+            stmt.execute();
+            conn.commit();
+          } catch (final Exception e) {
+            try {
+              conn.rollback();
+            } catch (@SuppressWarnings("unused") final Exception ee) {
+              //
+            }
+            
+            throw e;
+          }
+        }
+      } catch (final Exception e) {
+        throw new ServletException(e);
+      }
+    } else {
+      // Provide the errors to the view
+      request.setAttribute("errors", errors);
+    }
+    
+    // Regardless, provide the address to the view
+    request.setAttribute("address", address);
+  
+    // Render the view
+    request.getRequestDispatcher("/WEB-INF/jsp/address.jsp").forward(request, response);
+
+    log.info("< doPost");
   }
   
   @Override

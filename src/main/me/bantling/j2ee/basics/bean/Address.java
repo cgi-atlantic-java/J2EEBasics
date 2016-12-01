@@ -116,7 +116,7 @@ public class Address {
       append(Address.class.getSimpleName()).
       append("[id=").append(getId()).
       append(", line1=").append(getLine1()).
-      append(", line2=").append(getLine1()).
+      append(", line2=").append(getLine2()).
       append(", city=").append(getClass()).
       append(", country=").append(getCountry()).
       append(", region=").append(getRegion()).
