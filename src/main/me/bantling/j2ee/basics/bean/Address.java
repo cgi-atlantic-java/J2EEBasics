@@ -117,7 +117,7 @@ public class Address {
       append("[id=").append(getId()).
       append(", line1=").append(getLine1()).
       append(", line2=").append(getLine2()).
-      append(", city=").append(getClass()).
+      append(", city=").append(getCity()).
       append(", country=").append(getCountry()).
       append(", region=").append(getRegion()).
       append(", postalCode=").append(getPostalCode()).
