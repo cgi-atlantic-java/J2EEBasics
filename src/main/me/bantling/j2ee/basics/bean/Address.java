@@ -2,22 +2,7 @@ package me.bantling.j2ee.basics.bean;
 
 import java.util.Objects;
 
-import me.bantling.j2ee.basics.util.ValidationBuilder;
-import me.bantling.j2ee.basics.util.Validator;
-
 public class Address {
-  
-  // ==== Static methods
-  
-  public static Validator<Address> DEFAULT_VALIDATOR = new ValidationBuilder<Address>().
-    nonNull("Line 1", t -> t.getLine1()).
-    nullOrNonEmptyString("Line 2", t -> t.getLine2()).
-    nonNull("City", t -> t.getCity()).
-    nonNull("Country", t -> t.getCountry()).
-    nonNull("Region", t -> t.getRegion()).
-    validCDNPostalCode(t -> t.getCountry() == Country.CAN, "Postal Code", t -> t.getPostalCode()).
-    validUSAZipCode(t -> t.getCountry() == Country.USA, "Zip Code", t -> t.getPostalCode()).
-  end();
   
   // ==== Member fields
   
