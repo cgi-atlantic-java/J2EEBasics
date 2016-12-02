@@ -20,7 +20,6 @@ import me.bantling.j2ee.basics.bean.Country;
 import me.bantling.j2ee.basics.bean.Region;
 import me.bantling.j2ee.basics.dao.AddressDAO;
 import me.bantling.j2ee.basics.form.ObjectCreators;
-import me.bantling.j2ee.basics.util.RequestUtils;
 import me.bantling.j2ee.basics.validation.Validation;
 import me.bantling.j2ee.basics.validation.Validators;
 
@@ -105,7 +104,7 @@ public class AddressServlet extends HttpServlet {
     final HttpServletRequest request,
     final HttpServletResponse response
   ) throws ServletException, IOException {
-    log.info("> doPost: {}", RequestUtils.requestParameters(request));
+    log.info("> doPost");
     
     // Get the address from the form parameters
     final Address address = ObjectCreators.ADDRESS_CREATOR.create(request);

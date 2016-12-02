@@ -21,7 +21,10 @@
         /* Hide border */
         border-color: transparent;
         
-        /* Remove drop down arrow in non-IE */
+        /* On some OSes, the background color of a select is grey */
+        background-color: transparent;
+        
+        /* Remove drop down arrow in non-IE browsers */
         -moz-appearance: none;
         -webkit-appearance: none;
         appearance: none;
@@ -38,8 +41,8 @@
       select {
         /*
          * Specify the height a select should have, whether readonloy or editable.
-         * Removing the drop down arrow changes the height if we don't.
-         * 1.5em is fine for IE, butn FF/Chrome need it slightly larger
+         * The style changes above cause the height to change a bit if we don't.
+         * 1.5em is fine for IE, but FF/Chrome need it slightly larger.
          * 1.75 em works in all.
          */ 
         height: 1.75em;

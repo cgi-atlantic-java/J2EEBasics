@@ -27,7 +27,7 @@ public class ServletContextLogger implements ServletContextListener {
     
     for (final ServletRegistration servletReg : evt.getServletContext().getServletRegistrations().values()) {
       sb.
-        append(String.format("%n")).
+        append("\n").
         append(servletReg.getName()).
         append(" => ");
       
