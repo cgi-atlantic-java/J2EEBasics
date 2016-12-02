@@ -18,12 +18,25 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.webapp.WebInfConfiguration;
 import org.eclipse.jetty.webapp.WebXmlConfiguration;
 
+/**
+ * Configure Jetty and start it up to listen on a pre-defined port of {@value #PORT}.
+ * This port number is chosen because some Windows machines are already listening in port 8080 as some part of IIS.
+ */
 public class J2EEBasicsJetty {
-  public static final int PORT = 8080;
+  /**
+   * Jetty runs on port 8180
+   */
+  public static final int PORT = 8180;
   
+  /**
+   * Configure and start Jetty
+   * 
+   * @return instance of running server
+   * @throws Exception
+   */
   public static Server startJetty(
   ) throws Exception {
-    // Create the server on port 8080
+    // Create the server on the specified port
     final Server server = new Server(PORT);
     
     // Enable parsing of jndi-related parts of web.xml and jetty-env.xml
@@ -34,7 +47,7 @@ public class J2EEBasicsJetty {
       PlusConfiguration.class.getName()
     );
     
-    // Use a jetty-env.xml to specify a custom Properties object as a JNDI entry
+    // Use a jetty-env.xml to specify a datasource as a JNDI entry
     final EnvConfiguration envConfiguration = new EnvConfiguration();
     envConfiguration.setJettyEnvXml(Paths.get("WebContent/jetty/WEB-INF/jetty-env.xml").toUri().toURL());
     
@@ -44,7 +57,10 @@ public class J2EEBasicsJetty {
     // Set the directory to represent the top level of a WAR structure - EG, this directory contains WEB-INF
     webappContext.setResourceBase("WebContent/application");
     
-    // Configure this context to be able to handle annotations (EG @WebServlet), WEB-INF, and WEB-INF/web.xml
+    /*
+     * Configure this context to be able to handle annotations (EG @WebServlet), jetty-env.xml, WEB-INF,
+     * and WEB-INF/web.xml
+     */
     webappContext.setConfigurations(new Configuration[] {
       new AnnotationConfiguration(),
       envConfiguration,
@@ -56,16 +72,16 @@ public class J2EEBasicsJetty {
     webappContext.setContextPath("/basics");
     
     /*
-     *  Configure the context with the location of compiled class directories to scan for annotations (EG, @WebServlet).
-     *  Merely adding the above AnnotationConfiguration only makes it possible to parse annotations, without setting a
-     *  location on disk to scan, they annotations never get processed. 
+     * Configure the context with the location of compiled class directories to scan for annotations (EG, @WebServlet).
+     * Merely adding the above AnnotationConfiguration only makes it possible to parse annotations, without setting a
+     * location on disk to scan, no annotations never get processed. 
      */
     final URL classes = J2EEBasicsJetty.class.getProtectionDomain().getCodeSource().getLocation();
     webappContext.getMetaData().setWebInfClassesDirs(
       Arrays.asList(Resource.newResource(classes))
     );
     
-    // Turn off directory displays by default servlet - user gets 403 forbidden errors
+    // Turn off directory displays by default servlet (similar to Apache listings) - user gets 403 forbidden errors
     webappContext.setInitParameter(
       "org.eclipse.jetty.servlet.Default.dirAllowed",
       "false"
@@ -81,7 +97,10 @@ public class J2EEBasicsJetty {
     accessLog.setLogCookies(true);
     server.setRequestLog(accessLog);
     
-    // We could have just passed our context directly, but we may sometimes more contexts
+    /*
+     * Just pass our context directly - it is possible to pass another type of handler that can contain
+     * multiple contexts
+     */
     server.setHandler(webappContext);
     
     // Start the server
@@ -90,6 +109,12 @@ public class J2EEBasicsJetty {
     return server;
   }
   
+  /**
+   * Main method to start Jetty and wait for it to terminate
+   * 
+   * @param args ignored
+   * @throws Exception
+   */
   public static void main(
     final String[] args
   ) throws Exception {

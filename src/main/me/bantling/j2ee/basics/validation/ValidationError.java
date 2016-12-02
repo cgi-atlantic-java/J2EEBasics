@@ -2,7 +2,10 @@ package me.bantling.j2ee.basics.validation;
 
 import java.util.Objects;
 
-public final class Validation {
+/**
+ * A single validation error
+ */
+public final class ValidationError {
   
   // ==== Member fields
   
@@ -11,7 +14,7 @@ public final class Validation {
   
   // ==== Cons
   
-  public Validation(
+  public ValidationError(
     final String name,
     final String message
   ) {
@@ -21,12 +24,12 @@ public final class Validation {
   
   // ==== Accessors
   
-  public String getId(
+  public final String getId(
   ) {
     return id;
   }
   
-  public String getMessage(
+  public final String getMessage(
   ) {
     return message;
   }
@@ -45,8 +48,8 @@ public final class Validation {
   ) {
     boolean equals = o == this;
     
-    if ((! equals) && (o instanceof Validation)) {
-      final Validation obj = (Validation)(o);
+    if ((! equals) && (o instanceof ValidationError)) {
+      final ValidationError obj = (ValidationError)(o);
       
       equals = Objects.equals(id, obj.id) && Objects.equals(message, obj.message);
     }
@@ -58,7 +61,7 @@ public final class Validation {
   public String toString(
   ) {
     return new StringBuilder().
-      append(Validation.class.getSimpleName()).
+      append(ValidationError.class.getSimpleName()).
       append("[name=").append(id).
       append(", message=").append(message).
       toString();

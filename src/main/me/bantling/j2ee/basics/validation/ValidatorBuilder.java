@@ -4,26 +4,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 
 /**
- * Build a validator from zero or more validations. A single value can have multiple validations, and multiple values
- * can be validated. As a {@link Supplier}, the validator simply returns a List of String error messages. If the List
- * is empty, it means there were no errors.
+ * Build a {@link Validator} from zero or more validations. A single value can have multiple validations, and multiple
+ * values can be validated.
  */
-public class ValidationBuilder<T> {
+public class ValidatorBuilder<T> {
   private static final Pattern VALID_CDN_POSTAL_CODE = Pattern.compile("[A-Z][0-9][A-Z] [0-9][A-Z][0-9]");
   private static final Pattern VALID_USA_ZIP_CODE = Pattern.compile("[0-9]{5}(-[0-9]{4})?");
   
-  private final List<Function<T, Validation>> validations;
+  private final List<Function<T, ValidationError>> validations;
   
   {
     this.validations = new LinkedList<>();
   }
   
-  public ValidationBuilder<T> intGreaterThan(
+  public ValidatorBuilder<T> intGreaterThan(
     final String name,
     final ToIntFunction<T> value,
     final int min
@@ -31,44 +29,44 @@ public class ValidationBuilder<T> {
     validations.add(
       t -> value.applyAsInt(t) > min ?
         null :
-        new Validation(name, "Must be >= ".concat(Integer.toString(min)))
+        new ValidationError(name, "Must be >= ".concat(Integer.toString(min)))
     );
       
     return this;
   }
   
-  public ValidationBuilder<T> nonNull(
+  public ValidatorBuilder<T> nonNull(
     final String name,
     final Function<T, ?> value
   ) {
-    validations.add(t -> value.apply(t) != null ? null : new Validation(name, "Cannot be null"));
+    validations.add(t -> value.apply(t) != null ? null : new ValidationError(name, "Cannot be null"));
     
     return this;
   }
   
-  public ValidationBuilder<T> nonEmptyString(
+  public ValidatorBuilder<T> nonEmptyString(
     final String name,
     final Function<T, String> value
   ) {
     validations.add(t -> {
       final String str = value.apply(t);
       
-      return (str != null) && (str.length() > 0) ? null : new Validation(name, "Cannot be empty");
+      return (str != null) && (str.length() > 0) ? null : new ValidationError(name, "Cannot be empty");
     });
     
     return this;
   }
   
-  public ValidationBuilder<T> nullOrNonEmptyString(
+  public ValidatorBuilder<T> nullOrNonEmptyString(
     final String name,
     final Function<T, String> str
   ) {
-    validations.add(t -> ! "".equals(str.apply(t)) ? null : new Validation(name, "Cannot be null or empty"));
+    validations.add(t -> ! "".equals(str.apply(t)) ? null : new ValidationError(name, "Cannot be null or empty"));
     
     return this;
   }
   
-  public ValidationBuilder<T> validCDNPostalCode(
+  public ValidatorBuilder<T> validCDNPostalCode(
     final Predicate<T> isCanada,
     final String name,
     final Function<T, String> str
@@ -83,20 +81,20 @@ public class ValidationBuilder<T> {
           VALID_CDN_POSTAL_CODE.matcher(s).matches()
         ) ?
         null :
-        new Validation(name, "Invalid Canadian postal code");
+        new ValidationError(name, "Invalid Canadian postal code");
     });
     
     return this;
   }
   
-  public ValidationBuilder<T> validCDNPostalCode(
+  public ValidatorBuilder<T> validCDNPostalCode(
     final String name,
     final Function<T, String> str
   ) {
     return validCDNPostalCode(t -> true, name, str);
   }
   
-  public ValidationBuilder<T> validUSAZipCode(
+  public ValidatorBuilder<T> validUSAZipCode(
     final Predicate<T> isUSA,
     final String name,
     final Function<T, String> str
@@ -111,13 +109,13 @@ public class ValidationBuilder<T> {
           VALID_USA_ZIP_CODE.matcher(s).matches()
         ) ?
         null :
-        new Validation(name, "Invalid US zip code");
+        new ValidationError(name, "Invalid US zip code");
     });
     
     return this;
   }
   
-  public ValidationBuilder<T> validUSAZipCode(
+  public ValidatorBuilder<T> validUSAZipCode(
     final String name,
     final Function<T, String> str
   ) {
@@ -127,10 +125,10 @@ public class ValidationBuilder<T> {
   public Validator<T> end(
   ) {
     return t -> {
-      final List<Validation> errors = new LinkedList<>();
+      final List<ValidationError> errors = new LinkedList<>();
       
-      for (final Function<T, Validation> validation : validations) {
-        final Validation error = validation.apply(t);
+      for (final Function<T, ValidationError> validation : validations) {
+        final ValidationError error = validation.apply(t);
         
         if (error != null) {
           errors.add(error);

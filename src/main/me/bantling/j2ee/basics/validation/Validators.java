@@ -3,12 +3,15 @@ package me.bantling.j2ee.basics.validation;
 import me.bantling.j2ee.basics.bean.Address;
 import me.bantling.j2ee.basics.bean.Country;
 
+/**
+ * Implementations of {@link Validator}
+ */
 public interface Validators {
   
   // ==== Static fields
   
-  public static Validator<Address> ADDRESS_VALIDATOR =
-    new ValidationBuilder<Address>().
+  public static final Validator<Address> ADDRESS_VALIDATOR =
+    new ValidatorBuilder<Address>().
       intGreaterThan("id", t -> t.getId(), 0).
       nonEmptyString("line1", t -> t.getLine1()).
       nullOrNonEmptyString("line2", t -> t.getLine2()).

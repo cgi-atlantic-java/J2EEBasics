@@ -4,10 +4,13 @@ import me.bantling.j2ee.basics.bean.Address;
 import me.bantling.j2ee.basics.bean.Country;
 import me.bantling.j2ee.basics.bean.Region;
 
+/**
+ * Implementations of {@link ObjectCreator}
+ */
 public interface ObjectCreators {
-  public static ObjectCreator<Address> ADDRESS_CREATOR =
+  public static final ObjectCreator<Address> ADDRESS_CREATOR =
     r -> {
-      final PropertiesHelper helper = new PropertiesHelper(r);
+      final RequestParametersHelper helper = new RequestParametersHelper(r);
       final int id = helper.getInt("id");
       final String line1 = helper.getString("line1");
       final String line2 = helper.getNullOrNonEmptyString("line2");

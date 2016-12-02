@@ -20,9 +20,12 @@ import me.bantling.j2ee.basics.bean.Country;
 import me.bantling.j2ee.basics.bean.Region;
 import me.bantling.j2ee.basics.dao.AddressDAO;
 import me.bantling.j2ee.basics.form.ObjectCreators;
-import me.bantling.j2ee.basics.validation.Validation;
+import me.bantling.j2ee.basics.validation.ValidationError;
 import me.bantling.j2ee.basics.validation.Validators;
 
+/**
+ * Servlet to handle reading and writing {@link Address} objects
+ */
 @WebServlet(
   name = "Address",
   urlPatterns = "/address",
@@ -33,6 +36,9 @@ public class AddressServlet extends HttpServlet {
 
   private static final Logger log = LoggerFactory.getLogger(AddressServlet.class);
   
+  /**
+   * Create the address table and insert one row into it
+   */
   @Override
   public void init(
   ) throws ServletException {
@@ -65,6 +71,9 @@ public class AddressServlet extends HttpServlet {
     log.info("initialized HSQL address table");
   }
 
+  /**
+   * Get the single address for display
+   */
   @Override
   protected void doGet(
     final HttpServletRequest request,
@@ -99,6 +108,9 @@ public class AddressServlet extends HttpServlet {
     log.info("< doGet");
   }
   
+  /**
+   * Update the single address
+   */
   @Override
   protected void doPost(
     final HttpServletRequest request,
@@ -111,7 +123,7 @@ public class AddressServlet extends HttpServlet {
     log.debug("Address = {}", address);
     
     // Validate the address
-    final List<Validation> errors = Validators.ADDRESS_VALIDATOR.validate(address);
+    final List<ValidationError> errors = Validators.ADDRESS_VALIDATOR.validate(address);
     log.debug("Validation errors = {}", errors);
     
     // If there are no errors, save the address in the database
@@ -133,10 +145,13 @@ public class AddressServlet extends HttpServlet {
       request.setAttribute("errors", errors);
     }
     
-    // Regardless, provide the address to the view
+    /*
+     * Regardless, provide the given address to the view. If rhe given address is invalid, it lets the user see the
+     * invalid data and correct it.
+     */
     request.setAttribute("address", address);
   
-    // Render the view
+    // Render the address
     request.getRequestDispatcher("/WEB-INF/jsp/address.jsp").forward(request, response);
 
     log.info("< doPost");

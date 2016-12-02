@@ -10,6 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import me.bantling.j2ee.config.run.J2EEBasicsJetty;
 
+/**
+ * Log the details of each servlet context: contextPath, servlet names, and servlet mappings. The mappings are shown as
+ * the URL needed to access the servlet locally, assuming the server runs on the same machine as the client.
+ * 
+ * It is assumed that the server is listening on the port specified by {@link J2EEBasicsJetty#PORT}. 
+ */
 @WebListener
 public class ServletContextLogger implements ServletContextListener {
 

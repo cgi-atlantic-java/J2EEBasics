@@ -12,10 +12,23 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Log the details of each request: method, contextPath, pathInfo, pathTranslated, queryString, requestURI, requestURL,
+ * servletPath, parameters, and headers.
+ * 
+ * The parameters are logged with double quotes around them, to make it possible to see if there are leading and/or
+ * trailing whitespace characters, or if a value is only whitespace, etc. If a name or value shows as "null", it means
+ * that it was literally transmitted as a String containing the word null.
+ */
 @WebListener
 public class RequestLogger implements ServletRequestListener {
   private static final Logger log = LoggerFactory.getLogger(RequestLogger.class);
   
+  /**
+   * Log the request
+   * 
+   * @param evt
+   */
   @Override
   public void requestInitialized(
     final ServletRequestEvent evt
