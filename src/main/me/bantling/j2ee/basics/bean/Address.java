@@ -2,9 +2,12 @@ package me.bantling.j2ee.basics.bean;
 
 import java.util.Objects;
 
+/**
+ * A simple street address
+ */
 public class Address {
   
-  // ==== Member fields
+  // ==== Instance fields
   
   private final int id;
   private final String line1;
@@ -36,37 +39,37 @@ public class Address {
   
   // ==== Accessors
 
-  public int getId(
+  public final int getId(
   ) {
     return id;
   }
 
-  public String getLine1(
+  public final String getLine1(
   ) {
     return line1;
   }
 
-  public String getLine2(
+  public final String getLine2(
   ) {
     return line2;
   }
 
-  public String getCity(
+  public final String getCity(
   ) {
     return city;
   }
 
-  public Country getCountry(
+  public final Country getCountry(
   ) {
     return country;
   }
 
-  public Region getRegion(
+  public final Region getRegion(
   ) {
     return region;
   }
 
-  public String getPostalCode(
+  public final String getPostalCode(
   ) {
     return postalCode;
   }
@@ -78,13 +81,13 @@ public class Address {
   ) {
     return
       ((((((
-      getId() ) * 31 +
-      Objects.hashCode(getLine1()) ) * 31 +
-      Objects.hashCode(getLine2()) ) * 31 +
-      Objects.hashCode(getCity()) ) * 31 +
-      Objects.hashCode(getCountry()) ) * 31 +
-      Objects.hashCode(getRegion()) ) * 31 +
-      Objects.hashCode(getPostalCode());
+      id ) * 31 +
+      Objects.hashCode(line1) ) * 31 +
+      Objects.hashCode(line2) ) * 31 +
+      Objects.hashCode(city) ) * 31 +
+      Objects.hashCode(country) ) * 31 +
+      Objects.hashCode(region) ) * 31 +
+      Objects.hashCode(postalCode);
   }
   
   @Override
@@ -97,13 +100,13 @@ public class Address {
       final Address obj = (Address)(o);
       
       equals =
-        (getId() == obj.getId()) &&
-        Objects.equals(getLine1(), obj.getLine1()) &&
-        Objects.equals(getLine2(), obj.getLine2()) &&
-        Objects.equals(getClass(), obj.getCity()) &&
-        Objects.equals(getCountry(), obj.getCountry()) &&
-        Objects.equals(getRegion(), obj.getRegion()) &&
-        Objects.equals(getPostalCode(), obj.getPostalCode());
+        (id == obj.id) &&
+        Objects.equals(line1, obj.line1) &&
+        Objects.equals(line2, obj.line2) &&
+        Objects.equals(city, obj.city) &&
+        Objects.equals(country, obj.country) &&
+        Objects.equals(region, obj.region) &&
+        Objects.equals(postalCode, obj.postalCode);
     }
     
     return equals;
@@ -114,13 +117,13 @@ public class Address {
   ) {
     return new StringBuilder().
       append(Address.class.getSimpleName()).
-      append("[id=").append(getId()).
-      append(", line1=").append(getLine1()).
-      append(", line2=").append(getLine2()).
-      append(", city=").append(getCity()).
-      append(", country=").append(getCountry()).
-      append(", region=").append(getRegion()).
-      append(", postalCode=").append(getPostalCode()).
+      append("[id=").append(id).
+      append(", line1=").append(line1).
+      append(", line2=").append(line2).
+      append(", city=").append(city).
+      append(", country=").append(country).
+      append(", region=").append(region).
+      append(", postalCode=").append(postalCode).
       append(']').
       toString();
   }

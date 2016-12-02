@@ -10,7 +10,19 @@ import me.bantling.j2ee.basics.bean.Address;
 import me.bantling.j2ee.basics.bean.Country;
 import me.bantling.j2ee.basics.bean.Region;
 
+/**
+ * Persist an {@link Address} to the database
+ */
 public class AddressDAO {
+  /**
+   * Create the table
+   * 
+   * Wouldn't normally have this in a DAO, but since the database is in memory, the table has to be created at
+   * every startup.
+   * 
+   * @param conn
+   * @throws SQLException
+   */
   public static void createTable(
     final Connection conn
   ) throws SQLException {
@@ -38,6 +50,13 @@ public class AddressDAO {
     }
   }
   
+  /**
+   * Insert an Address
+   * 
+   * @param conn
+   * @param address
+   * @throws SQLException
+   */
   public static void insert(
     final Connection conn,
     final Address address
@@ -77,6 +96,14 @@ public class AddressDAO {
     }
   }
   
+  /**
+   * Select an Address by id
+   * 
+   * @param conn
+   * @param id
+   * @return
+   * @throws SQLException
+   */
   public static Address select(
     final Connection conn,
     final int id
@@ -122,6 +149,13 @@ public class AddressDAO {
     return address;
   }
   
+  /**
+   * Update an Address by id
+   * 
+   * @param conn
+   * @param address
+   * @throws SQLException
+   */
   public static void update(
     final Connection conn,
     final Address address
