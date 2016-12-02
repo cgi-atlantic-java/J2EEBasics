@@ -2,7 +2,6 @@
 <%@ page import="me.bantling.j2ee.basics.bean.Country"%>
 <%@ page import="me.bantling.j2ee.basics.bean.Region"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
