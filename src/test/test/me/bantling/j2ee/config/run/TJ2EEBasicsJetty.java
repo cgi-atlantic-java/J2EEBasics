@@ -5,11 +5,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.servlet.annotation.WebServlet;
+
+import org.eclipse.jetty.server.NetworkConnector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import me.bantling.j2ee.basics.servlet.HelloWorldServlet;
 import me.bantling.j2ee.config.run.J2EEBasicsJetty;
 
 @SuppressWarnings("static-method")
@@ -21,10 +26,14 @@ public class TJ2EEBasicsJetty {
   ) throws Exception {
     final Server jetty = J2EEBasicsJetty.startJetty();
     
-    final URL url = new URL("http://localhost:" + J2EEBasicsJetty.PORT + "/jsp");
-    log.info("Accessing Jetty URL with header luckyNumber set to 666 at: {}", url);
+    // Get the port number, context path, and servlet path
+    final int port = ((NetworkConnector)(jetty.getConnectors()[0])).getPort();
+    final String contextPath = ((WebAppContext)(jetty.getHandler())).getContextPath();
+    final String servletPath = HelloWorldServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0];
+    
+    final URL url = new URL("http://localhost:" + port + contextPath + servletPath);
+    log.info("Accessing Jetty Hello, World app at: {}", url);
     final HttpURLConnection conn = (HttpURLConnection)(url.openConnection());
-    conn.setRequestProperty("luckyNumber", "666");
     
     final StringBuilder sb = new StringBuilder();
     try (

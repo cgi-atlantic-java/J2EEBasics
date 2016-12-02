@@ -29,6 +29,11 @@ public class J2EEBasicsJetty {
   public static final int PORT = 8180;
   
   /**
+   * Jetty context path
+   */
+  public static final String CONTEXT_PATH = "/basics";
+  
+  /**
    * Configure and start Jetty
    * 
    * @return instance of running server
@@ -69,7 +74,7 @@ public class J2EEBasicsJetty {
     });
     
     // In Jetty, the ROOT can be set to "/" without any warnings, we use /basics
-    webappContext.setContextPath("/basics");
+    webappContext.setContextPath(CONTEXT_PATH);
     
     /*
      * Configure the context with the location of compiled class directories to scan for annotations (EG, @WebServlet).
