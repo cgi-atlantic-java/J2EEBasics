@@ -62,7 +62,7 @@ public final class ValidationError {
   ) {
     return new StringBuilder().
       append(ValidationError.class.getSimpleName()).
-      append("[name=").append(id).
+      append("[id=").append(id).
       append(", message=").append(message).
       toString();
   }

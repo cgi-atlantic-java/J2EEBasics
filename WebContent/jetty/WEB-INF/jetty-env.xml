@@ -10,6 +10,7 @@
         <Set name="databaseName">db</Set>
         <Set name="url">jdbc:hsqldb:mem:db;sql.enforce_strict_size=true</Set>
         <Set name="user">SA</Set>
+        <!-- Must specify type="String" to set the value to an empty String instead of null -->
         <Set name="password" type="String"></Set>
       </New>
     </Arg>

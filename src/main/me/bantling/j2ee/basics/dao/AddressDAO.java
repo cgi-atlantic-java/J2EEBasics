@@ -61,6 +61,7 @@ public class AddressDAO {
     final Connection conn,
     final Address address
   ) throws SQLException {
+    // We can prevent SQL injection attacks by always using a PreparedStatement for DML
     try (
       final PreparedStatement stmt = conn.prepareStatement(
         "insert into address (" +

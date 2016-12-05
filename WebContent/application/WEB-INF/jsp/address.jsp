@@ -46,154 +46,169 @@
          */ 
         height: 1.75em;
       }
+      
+      #addressForm th {
+        /* By default, th has centered text, we want our labels left aligned */
+        text-align: left;
+        
+        /*
+         * Set width to the width needed for the longer Canadian labels.
+         * When switching to USAand displaying the narrow labels, the columns remain the same size.
+         */
+        width: 5.5em;
+      }
     </style>
     <script type="text/javascript">
       // ==== DOM element references
       
-      var regionLabel;
-      var postalCodeLabel;
-      var countrySelect;
-      var regionSelect;
-      var editButton;
-      var saveButton;
+      var pageLoaded;
       
-      // ==== Data structures
-      
-      var labelsByCountry = {};
-      var regionsByCountry = {};
-      
-      // ==== Event handlers
-      
-      function readOnlyTextInputFocus(e) {
-        // Remove focus so that the flashing I cursor disappears
-        this.blur();
-      }
-      
-      function readonlySelectMouseDown(e) {
-        // Suppress normal mouse handling so the select doesn't drop down
-        e.preventDefault();
-        this.blur();
-        window.focus();
-      }
-      
-      function countrySelectChange(e) {
-        // Remove all but "Select a Region" from regions drop down 
-        regionSelect.options.length = 1;
+      (function() {
+        var regionLabel;
+        var postalCodeLabel;
+        var countrySelect;
+        var regionSelect;
+        var editButton;
+        var saveButton;
         
-        // Populate if the country isn't "Select a Country"
-        if (countrySelect.selectedIndex !== 0) {
-          // Get selected country code
-          var selectedCountry = countrySelect.options[countrySelect.selectedIndex].value;
+        // ==== Data structures
+        
+        var labelsByCountry = {};
+        var regionsByCountry = {};
+        
+        // ==== Event handlers
+        
+        function readOnlyTextInputFocus(e) {
+          // Remove focus so that the flashing I cursor disappears
+          this.blur();
+        }
+        
+        function readonlySelectMouseDown(e) {
+          // Suppress normal mouse handling so the select doesn't drop down
+          e.preventDefault();
+          this.blur();
+          window.focus();
+        }
+        
+        function countrySelectChange(e) {
+          // Remove all but "Select a Region" from regions drop down 
+          regionSelect.options.length = 1;
           
-          // Set language of labels
-          countryLabels = labelsByCountry[selectedCountry];
-          regionSelect.options[0].text = "Select a " + countryLabels.regionLabel;
-          regionLabel.innerText = countryLabels.regionLabel;
-          postalCodeLabel.innerText = countryLabels.postalCodeLabel;
-          
-          // Populate regions of the selected country
-          var countryRegions = regionsByCountry[selectedCountry];
-          for (var i in countryRegions) {
-            var region = countryRegions[i];
+          // Populate if the country isn't "Select a Country"
+          if (countrySelect.selectedIndex !== 0) {
+            // Get selected country code
+            var selectedCountry = countrySelect.options[countrySelect.selectedIndex].value;
             
-            regionSelect.options[regionSelect.options.length] = new Option(region.text, region.value);
+            // Set language of labels
+            countryLabels = labelsByCountry[selectedCountry];
+            regionLabel.innerText = countryLabels.regionLabel;
+            postalCodeLabel.innerText = countryLabels.postalCodeLabel;
+            regionSelect.options[0].text = "Select a " + countryLabels.regionLabel;
+            
+            // Populate regions of the selected country
+            var countryRegions = regionsByCountry[selectedCountry];
+            for (var i in countryRegions) {
+              var region = countryRegions[i];
+              
+              regionSelect.options[regionSelect.options.length] = new Option(region.text, region.value);
+            }
           }
         }
-      }
-      
-      function editClicked(e) {
-        setViewEditable(true);
-      }
-      
-      function saveClicked(e) {
-        //
-      }
-      
-      // ==== View state functions
-      
-      function setViewEditable(editable) {
-        if (! editable) {
-          document.body.classList.add("readonly");
-          
-          var textInputs = document.querySelectorAll("input[type='text']");
-          for (var i = 0; i < textInputs.length; i++) {
-            textInputs[i].setAttribute("readonly", "readonly");
-            textInputs[i].addEventListener("focus", readOnlyTextInputFocus);
-          }
-          
-          var selects = document.querySelectorAll("select");
-          for (var i = 0; i < selects.length; i++) {
-            selects[i].addEventListener("mousedown", readonlySelectMouseDown);
-          }
-          
-          editButton.removeAttribute("disabled");
-          saveButton.setAttribute("disabled", "disabled");
-        } else {
-          document.body.classList.remove("readonly");
-          
-          var textInputs = document.querySelectorAll("input[type='text']");
-          for (var i = 0; i < textInputs.length; i++) {
-            textInputs[i].removeAttribute("readonly");
-            textInputs[i].removeEventListener("focus", readOnlyTextInputFocus);
-          }
-          
-          var selects = document.querySelectorAll("select");
-          for (var i = 0; i < selects.length; i++) {
-            selects[i].removeEventListener("mousedown", readonlySelectMouseDown);
-          }
-          
-          editButton.setAttribute("disabled", "disabled");
-          saveButton.removeAttribute("disabled");
+        
+        function editClicked(e) {
+          setViewEditable(true);
         }
-      }
-      
-      // ==== Page load handler
-      
-      function pageLoaded() {
-      
-        // ==== Initialize data structures
-      
-        // Create a JS mapping of all countries to their regions
-        <c:forEach var="country" items="${Country.values()}">
-          labelsByCountry["${country.name()}"] = {
-            regionLabel: "${country.regionLabel()}",
-            postalCodeLabel: "${country.postalCodeLabel()}"
-          }; 
         
-          var countryRegions;
-          regionsByCountry["${country.name()}"] = countryRegions = [];
+        function saveClicked(e) {
+          //
+        }
         
-          <c:forEach var="region" items="${Region.values()}">
-            <c:if test="${region.country == country}">
-              countryRegions.push({value: "${region.name()}", text: "${region.toString()}"});
-            </c:if>
+        // ==== View state functions
+        
+        function setViewEditable(editable) {
+          if (! editable) {
+            document.body.classList.add("readonly");
+            
+            var textInputs = document.querySelectorAll("input[type='text']");
+            for (var i = 0; i < textInputs.length; i++) {
+              textInputs[i].setAttribute("readonly", "readonly");
+              textInputs[i].addEventListener("focus", readOnlyTextInputFocus);
+            }
+            
+            var selects = document.querySelectorAll("select");
+            for (var i = 0; i < selects.length; i++) {
+              selects[i].addEventListener("mousedown", readonlySelectMouseDown);
+            }
+            
+            editButton.removeAttribute("disabled");
+            saveButton.setAttribute("disabled", "disabled");
+          } else {
+            document.body.classList.remove("readonly");
+            
+            var textInputs = document.querySelectorAll("input[type='text']");
+            for (var i = 0; i < textInputs.length; i++) {
+              textInputs[i].removeAttribute("readonly");
+              textInputs[i].removeEventListener("focus", readOnlyTextInputFocus);
+            }
+            
+            var selects = document.querySelectorAll("select");
+            for (var i = 0; i < selects.length; i++) {
+              selects[i].removeEventListener("mousedown", readonlySelectMouseDown);
+            }
+            
+            editButton.setAttribute("disabled", "disabled");
+            saveButton.removeAttribute("disabled");
+          }
+        }
+        
+        // ==== Page load handler
+        
+        pageLoaded = function() {
+        
+          // ==== Initialize data structures
+        
+          // Create a JS mapping of all countries to their regions
+          <c:forEach var="country" items="${Country.values()}">
+            labelsByCountry["${country}"] = {
+              regionLabel: "${country.regionLabel()}",
+              postalCodeLabel: "${country.postalCodeLabel()}"
+            }; 
+          
+            var countryRegions;
+            regionsByCountry["${country}"] = countryRegions = [];
+          
+            <c:forEach var="region" items="${Region.values()}">
+              <c:if test="${region.country == country}">
+                countryRegions.push({value: "${region}", text: "${region.toString()}"});
+              </c:if>
+            </c:forEach>
           </c:forEach>
-        </c:forEach>
+          
+          // ==== Initialize DOM element references
+          
+          // Get the province and postal code labels
+          regionLabel = document.querySelectorAll("label[for='region']")[0];
+          postalCodeLabel = document.querySelectorAll("label[for='postalCode']")[0];
+          
+          // Get the country and region drop downs
+          countrySelect = document.getElementById("country");
+          regionSelect = document.getElementById("region");
+          
+          // Get the edit and save buttons
+          editButton = document.getElementById("edit");
+          saveButton = document.getElementById("save");
+          
+          // ==== Initialize event handlers
+          
+          countrySelect.addEventListener("change", countrySelectChange);
+          editButton.addEventListener("click", editClicked);
+          saveButton.addEventListener("click", saveClicked);
         
-        // ==== Initialize DOM element references
-        
-        // Get the province and postal code labels
-        regionLabel = document.querySelectorAll("label[for='region']")[0];
-        postalCodeLabel = document.querySelectorAll("label[for='postalCode']")[0];
-        
-        // Get the country and region drop downs
-        countrySelect = document.getElementById("country");
-        regionSelect = document.getElementById("region");
-        
-        // Get the edit and save buttons
-        editButton = document.getElementById("edit");
-        saveButton = document.getElementById("save");
-        
-        // ==== Initialize event handlers
-        
-        countrySelect.addEventListener("change", countrySelectChange);
-        editButton.addEventListener("click", editClicked);
-        saveButton.addEventListener("click", saveClicked);
-      
-        // ==== Initialize view state
-        
-        setViewEditable(false);
-      }
+          // ==== Initialize view state
+          
+          setViewEditable(false);
+        }
+      })();
     </script>
   </head>
   <body onload="pageLoaded();">
@@ -201,7 +216,7 @@
     
     <c:if test="${not empty errors}">
       <h2>Errors</h2>
-      <table>
+      <table id="errors">
         <thead>
           <tr>
             <th>Id</th>

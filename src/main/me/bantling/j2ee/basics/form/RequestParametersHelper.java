@@ -23,18 +23,25 @@ public class RequestParametersHelper {
   // ==== Impl
   
   public int getInt(
-    final String name
-  ) {
-    final String str = request.getParameter(name).trim();
-    return str != null ? Integer.parseInt(str) : 0;
-  }
-  
-  public int getInt(
     final String name,
     final int defaultValue
   ) {
     final String str = request.getParameter(name).trim();
-    return str != null ? Integer.parseInt(str) : defaultValue;
+    int i = defaultValue;
+    
+    try {
+      i = Integer.parseInt(str);
+    } catch (@SuppressWarnings("unused") final NumberFormatException e) {
+      //
+    }
+    
+    return i;
+  }
+  
+  public int getInt(
+    final String name
+  ) {
+    return getInt(name, 0);
   }
   
   public String getString(
@@ -47,7 +54,7 @@ public class RequestParametersHelper {
     final String name
   ) {
     final String str = request.getParameter(name).trim();
-    return "".equals(str) ? null : str;
+    return str.length() == 0 ? null : str;
   }
   
   public <E extends Enum<E>> E getEnum(
@@ -55,9 +62,10 @@ public class RequestParametersHelper {
     final Class<E> enumType
   ) {
     E value = null;
+    
     try {
       value = Enum.valueOf(enumType, request.getParameter(name).trim());
-    } catch (@SuppressWarnings("unused") final Exception e) {
+    } catch (@SuppressWarnings("unused") final IllegalArgumentException e) {
       //
     }
     

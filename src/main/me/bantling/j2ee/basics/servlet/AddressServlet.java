@@ -146,7 +146,7 @@ public class AddressServlet extends HttpServlet {
     }
     
     /*
-     * Regardless, provide the given address to the view. If rhe given address is invalid, it lets the user see the
+     * Regardless, provide the given address to the view. If the given address is invalid, it lets the user see the
      * invalid data and correct it.
      */
     request.setAttribute("address", address);
