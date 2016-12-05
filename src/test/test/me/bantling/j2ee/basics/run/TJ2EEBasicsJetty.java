@@ -1,4 +1,4 @@
-package test.me.bantling.j2ee.config.run;
+package test.me.bantling.j2ee.basics.run;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import me.bantling.j2ee.basics.run.J2EEBasicsJetty;
 import me.bantling.j2ee.basics.servlet.HelloWorldServlet;
-import me.bantling.j2ee.config.run.J2EEBasicsJetty;
 
 @SuppressWarnings("static-method")
 public class TJ2EEBasicsJetty {

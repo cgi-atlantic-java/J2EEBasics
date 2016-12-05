@@ -1,4 +1,4 @@
-package me.bantling.j2ee.config.run;
+package me.bantling.j2ee.basics.run;
 
 import java.net.URL;
 import java.nio.file.Paths;

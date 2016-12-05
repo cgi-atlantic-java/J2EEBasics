@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import me.bantling.j2ee.config.run.J2EEBasicsJetty;
+import me.bantling.j2ee.basics.run.J2EEBasicsJetty;
 
 /**
  * Log the details of each servlet context: contextPath, servlet names, and servlet mappings. The mappings are shown as
