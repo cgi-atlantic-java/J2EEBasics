@@ -18,7 +18,7 @@ The console output will indicate the URLs you use in your browser to access the 
 
 +=====================================+==============================================+
 | Location                            | Purpose                                      |
-|=====================================|==============================================|
++=====================================+==============================================+
 | src/main                            | Main code                                    |
 |  me.bantling.j2ee.basics.bean       |  Immutable JavaBeans and Enums               |
 |  me.bantling.j2ee.basics.dao        |  DAO classes                                 |
