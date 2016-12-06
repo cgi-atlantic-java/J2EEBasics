@@ -50,19 +50,33 @@ public class AddressServlet extends HttpServlet {
       try (
         final Connection conn = ds.getConnection();
       ) {
-        AddressDAO.createTable(conn);
-        AddressDAO.insert(
-          conn,
-          new Address(
-            1,
-            "7071 Bayers Rd",
-            null,
-            "Halifax",
-            Country.CAN,
-            Region.NS,
-            "B3L 2C2"
-          )
-        );
+        try {
+          conn.setAutoCommit(false);
+          
+          AddressDAO.createTable(conn);
+          AddressDAO.insert(
+            conn,
+            new Address(
+              1,
+              "7071 Bayers Rd",
+              null,
+              "Halifax",
+              Country.CAN,
+              Region.NS,
+              "B3L 2C2"
+            )
+          );
+          
+          conn.commit();
+        } catch (final Exception e) {
+          try {
+            conn.rollback();
+          } catch (@SuppressWarnings("unused") final Exception ee) {
+            //
+          }
+          
+          throw e;
+        }
       }
     } catch (final Exception e) {
       throw new ServletException(e);
@@ -91,7 +105,21 @@ public class AddressServlet extends HttpServlet {
       try (
         final Connection conn = ds.getConnection();
       ) {
-        address = AddressDAO.select(conn, 1);
+        try {
+          conn.setAutoCommit(false);
+          
+          address = AddressDAO.select(conn, 1);
+          
+          conn.commit();
+        } catch (final Exception e) {
+          try {
+            conn.rollback();
+          } catch (@SuppressWarnings("unused") final Exception ee) {
+            //
+          }
+          
+          throw e;
+        }
       }
     } catch (final Exception e) {
       throw new ServletException(e);
@@ -135,7 +163,21 @@ public class AddressServlet extends HttpServlet {
         try (
           final Connection conn = ds.getConnection();
         ) {
-          AddressDAO.update(conn, address);
+          try {
+            conn.setAutoCommit(false);
+            
+            AddressDAO.update(conn, address);
+            
+            conn.commit();
+          } catch (final Exception e) {
+            try {
+              conn.rollback();
+            } catch (@SuppressWarnings("unused") final Exception ee) {
+              //
+            }
+            
+            throw e;
+          }
         }
       } catch (final Exception e) {
         throw new ServletException(e);
