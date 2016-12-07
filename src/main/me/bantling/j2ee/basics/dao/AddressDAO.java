@@ -1,5 +1,7 @@
 package me.bantling.j2ee.basics.dao;
 
+import static java.util.Objects.requireNonNull;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +28,8 @@ public class AddressDAO {
   public static void createTable(
     final Connection conn
   ) throws SQLException {
+    requireNonNull(conn, "conn");
+    
     try (
       final Statement stmt = conn.createStatement();
     ) {
@@ -61,6 +65,9 @@ public class AddressDAO {
     final Connection conn,
     final Address address
   ) throws SQLException {
+    requireNonNull(conn, "conn");
+    requireNonNull(address, "address");
+    
     // We can prevent SQL injection attacks by always using a PreparedStatement for DML
     try (
       final PreparedStatement stmt = conn.prepareStatement(
@@ -109,6 +116,8 @@ public class AddressDAO {
     final Connection conn,
     final int id
   ) throws SQLException {
+    requireNonNull(conn, "conn");
+    
     Address address;
     
     try (
@@ -161,6 +170,9 @@ public class AddressDAO {
     final Connection conn,
     final Address address
   ) throws SQLException {
+    requireNonNull(conn, "conn");
+    requireNonNull(address, "address");
+    
     try (
       final PreparedStatement stmt = conn.prepareStatement(
         "update address set" +

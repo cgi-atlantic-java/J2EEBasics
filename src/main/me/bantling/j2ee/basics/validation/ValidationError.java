@@ -1,6 +1,6 @@
 package me.bantling.j2ee.basics.validation;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A single validation error
@@ -15,11 +15,11 @@ public final class ValidationError {
   // ==== Cons
   
   public ValidationError(
-    final String name,
+    final String id,
     final String message
   ) {
-    this.id = name;
-    this.message = message;
+    this.id = requireNonNull(id, "id");
+    this.message = requireNonNull(message, "message");
   }
   
   // ==== Accessors
@@ -39,7 +39,7 @@ public final class ValidationError {
   @Override
   public int hashCode(
   ) {
-    return (Objects.hashCode(id)) * 31 + Objects.hashCode(message);
+    return id.hashCode() * 31 + message.hashCode();
   }
   
   @Override
@@ -51,7 +51,7 @@ public final class ValidationError {
     if ((! equals) && (o instanceof ValidationError)) {
       final ValidationError obj = (ValidationError)(o);
       
-      equals = Objects.equals(id, obj.id) && Objects.equals(message, obj.message);
+      equals = (id == obj.id) && message.equals(obj.message);
     }
     
     return equals;

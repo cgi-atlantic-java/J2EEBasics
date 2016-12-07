@@ -1,5 +1,7 @@
 package me.bantling.j2ee.basics.validation;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -26,6 +28,9 @@ public class ValidatorBuilder<T> {
     final ToIntFunction<T> value,
     final int min
   ) {
+    requireNonNull(name, "name");
+    requireNonNull(value, "value");
+    
     validations.add(
       t -> value.applyAsInt(t) > min ?
         null :
@@ -39,6 +44,9 @@ public class ValidatorBuilder<T> {
     final String name,
     final Function<T, ?> value
   ) {
+    requireNonNull(name, "name");
+    requireNonNull(value, "value");
+    
     validations.add(t -> value.apply(t) != null ? null : new ValidationError(name, "Cannot be null"));
     
     return this;
@@ -48,6 +56,9 @@ public class ValidatorBuilder<T> {
     final String name,
     final Function<T, String> value
   ) {
+    requireNonNull(name, "name");
+    requireNonNull(value, "value");
+    
     validations.add(t -> {
       final String str = value.apply(t);
       
@@ -59,9 +70,12 @@ public class ValidatorBuilder<T> {
   
   public ValidatorBuilder<T> nullOrNonEmptyString(
     final String name,
-    final Function<T, String> str
+    final Function<T, String> value
   ) {
-    validations.add(t -> ! "".equals(str.apply(t)) ? null : new ValidationError(name, "Cannot be null or empty"));
+    requireNonNull(name, "name");
+    requireNonNull(value, "value");
+    
+    validations.add(t -> ! "".equals(value.apply(t)) ? null : new ValidationError(name, "Cannot be null or empty"));
     
     return this;
   }
@@ -69,10 +83,14 @@ public class ValidatorBuilder<T> {
   public ValidatorBuilder<T> validCDNPostalCode(
     final Predicate<T> isCanada,
     final String name,
-    final Function<T, String> str
+    final Function<T, String> value
   ) {
+    requireNonNull(isCanada, "isCanada");
+    requireNonNull(name, "name");
+    requireNonNull(value, "value");
+    
     validations.add(t -> {
-      final String s = str.apply(t);
+      final String s = value.apply(t);
       
       return
         (! isCanada.test(t)) ||
@@ -89,18 +107,22 @@ public class ValidatorBuilder<T> {
   
   public ValidatorBuilder<T> validCDNPostalCode(
     final String name,
-    final Function<T, String> str
+    final Function<T, String> value
   ) {
-    return validCDNPostalCode(t -> true, name, str);
+    return validCDNPostalCode(t -> true, name, value);
   }
   
   public ValidatorBuilder<T> validUSAZipCode(
     final Predicate<T> isUSA,
     final String name,
-    final Function<T, String> str
+    final Function<T, String> value
   ) {
+    requireNonNull(isUSA, "isUSA");
+    requireNonNull(name, "name");
+    requireNonNull(value, "value");
+    
     validations.add(t -> {
-      final String s = str.apply(t);
+      final String s = value.apply(t);
       
       return
         (! isUSA.test(t)) ||
